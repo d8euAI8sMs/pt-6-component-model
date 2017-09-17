@@ -164,6 +164,7 @@ HRESULT __stdcall ComponentDll::Impl::CListFactory::CreateInstance(LPUNKNOWN pUn
 }
 
 ULONG ComponentDll::Impl::g_ServerLocks = 0;
+ULONG ComponentDll::Impl::g_ComponentRefs = 0;
 
 HRESULT __stdcall ComponentDll::Impl::CListFactory::LockServer(BOOL fLock)
 {
@@ -185,3 +186,28 @@ extern "C" COMPONENTDLL_API IUnknown* CreateInstance()
     IUnknown * com = reinterpret_cast<IUnknown *>(new ComponentDll::Impl::CList());
     return com;
 }
+
+STDAPI DllCanUnloadNow() {
+	HRESULT rc = E_UNEXPECTED;
+	if ((ComponentDll::Impl::g_ServerLocks == 0)
+        && (ComponentDll::Impl::g_ComponentRefs == 0)) rc = S_OK;
+	else rc = S_FALSE;
+	return rc;
+};
+
+STDAPI DllGetClassObject(const CLSID & clsid, const IID & iid, void ** ppv) {
+	HRESULT rc = E_UNEXPECTED;
+
+	if (clsid == ComponentDll::Impl::CLSID_CLIST) {
+		IUnknown * cf = new ComponentDll::Impl::CListFactory();
+		rc = cf->QueryInterface(iid, ppv);
+		cf->Release();
+	}
+	else
+    {
+		rc = CLASS_E_CLASSNOTAVAILABLE;
+        *ppv = NULL;
+    }
+
+	return rc;
+};
