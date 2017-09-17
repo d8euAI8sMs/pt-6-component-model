@@ -1,0 +1,17 @@
+version: '{build}'
+
+image:
+  - Visual Studio 2013
+
+configuration:
+  - Release
+
+install:
+  - git submodule update --init --recursive
+
+build:
+  project: ComponentModel.sln
+
+artifacts:
+  - path: '%CONFIGURATION%\ComponentModel.exe'
+  - path: '%CONFIGURATION%\ComponentDll.dll'

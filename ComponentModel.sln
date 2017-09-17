@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30501.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ComponentModel", "ComponentModel\ComponentModel.vcxproj", "{8310E86F-8FEA-4E82-9C5E-DEAA3D65FA8B}"
+	ProjectSection(ProjectDependencies) = postProject
+		{426AC75B-9AA6-4DEA-8DCE-8081F9F9269A} = {426AC75B-9AA6-4DEA-8DCE-8081F9F9269A}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ComponentDll", "ComponentDll\ComponentDll.vcxproj", "{426AC75B-9AA6-4DEA-8DCE-8081F9F9269A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8310E86F-8FEA-4E82-9C5E-DEAA3D65FA8B}.Debug|Win32.ActiveCfg = Debug|Win32
+		{8310E86F-8FEA-4E82-9C5E-DEAA3D65FA8B}.Debug|Win32.Build.0 = Debug|Win32
+		{8310E86F-8FEA-4E82-9C5E-DEAA3D65FA8B}.Release|Win32.ActiveCfg = Release|Win32
+		{8310E86F-8FEA-4E82-9C5E-DEAA3D65FA8B}.Release|Win32.Build.0 = Release|Win32
+		{426AC75B-9AA6-4DEA-8DCE-8081F9F9269A}.Debug|Win32.ActiveCfg = Debug|Win32
+		{426AC75B-9AA6-4DEA-8DCE-8081F9F9269A}.Debug|Win32.Build.0 = Debug|Win32
+		{426AC75B-9AA6-4DEA-8DCE-8081F9F9269A}.Release|Win32.ActiveCfg = Release|Win32
+		{426AC75B-9AA6-4DEA-8DCE-8081F9F9269A}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
