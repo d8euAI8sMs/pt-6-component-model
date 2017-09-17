@@ -36,6 +36,7 @@ HRESULT __stdcall ComponentDll::Impl::CList::QueryInterface(REFIID iid, void** p
         *ppv = (IEnumerator*) this;
         return AddRef(), S_OK;
     }
+    *ppv = NULL;
     return E_NOINTERFACE;
 }
 
