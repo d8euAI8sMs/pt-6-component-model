@@ -153,6 +153,33 @@ ULONG __stdcall ComponentDll::Impl::CListFactory::Release()
     return val;
 }
 
+HRESULT __stdcall ComponentDll::Impl::CListFactory::CreateInstance(LPUNKNOWN pUnk, const IID & id, void ** ppv)
+{
+	if (pUnk != NULL) return CLASS_E_NOAGGREGATION;
+    if (ppv == NULL) return E_POINTER;
+    IUnknown * component = ::CreateInstance();
+    HRESULT rc = component->QueryInterface(id, ppv);
+    component->Release();
+    return rc;
+}
+
+ULONG ComponentDll::Impl::g_ServerLocks = 0;
+
+HRESULT __stdcall ComponentDll::Impl::CListFactory::LockServer(BOOL fLock)
+{
+	if (fLock)
+    {
+        CoLockObjectExternal((IUnknown *) this, TRUE, TRUE);
+        InterlockedIncrement(&g_ServerLocks);
+    }
+    else
+    {
+        InterlockedDecrement(&g_ServerLocks);
+        CoLockObjectExternal((IUnknown *) this, FALSE, TRUE);
+    }
+    return S_OK;
+}
+
 extern "C" COMPONENTDLL_API IUnknown* CreateInstance()
 {
     IUnknown * com = reinterpret_cast<IUnknown *>(new ComponentDll::Impl::CList());
