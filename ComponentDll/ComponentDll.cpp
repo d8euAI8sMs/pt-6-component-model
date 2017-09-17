@@ -198,7 +198,7 @@ STDAPI DllCanUnloadNow() {
 STDAPI DllGetClassObject(const CLSID & clsid, const IID & iid, void ** ppv) {
 	HRESULT rc = E_UNEXPECTED;
 
-	if (clsid == ComponentDll::Impl::CLSID_CLIST) {
+	if (clsid == ComponentDll::CLSID_CLIST) {
 		IUnknown * cf = new ComponentDll::Impl::CListFactory();
 		rc = cf->QueryInterface(iid, ppv);
 		cf->Release();

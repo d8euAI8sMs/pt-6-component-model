@@ -19,9 +19,6 @@ namespace ComponentDll
 
         extern ULONG g_ComponentRefs;
 
-        static const GUID CLSID_CLIST =
-        { 0xc415618f, 0xc097, 0x4590, { 0x90, 0xdc, 0x86, 0x9c, 0xe7, 0x56, 0xff, 0x83} };
-
         class CList : public ComponentDll::ICollection, public ComponentDll::IEnumerator
         {
             ULONG m_cRef;
