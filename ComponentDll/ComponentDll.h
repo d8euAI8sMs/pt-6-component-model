@@ -17,6 +17,8 @@ namespace ComponentDll
     namespace Impl
     {
 
+        extern ULONG g_ComponentRefs;
+
         class CList : public ComponentDll::ICollection, public ComponentDll::IEnumerator
         {
             ULONG m_cRef;
@@ -41,9 +43,9 @@ namespace ComponentDll
 
         public:
 
-            CList() : m_cRef(1) { }
+            CList() : m_cRef(1) { InterlockedIncrement(&g_ComponentRefs); }
 
-            ~CList() { std::cout << __FUNCTION__ << std::endl; }
+            ~CList() { std::cout << __FUNCTION__ << std::endl; InterlockedDecrement(&g_ComponentRefs); }
         };
 
         extern ULONG g_ServerLocks;
