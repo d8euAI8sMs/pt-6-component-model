@@ -120,6 +120,38 @@ HRESULT __stdcall ComponentDll::Impl::CList::GetCurrent(ComponentDll::Object *ob
     return S_OK;
 }
 
+HRESULT __stdcall ComponentDll::Impl::CListFactory::QueryInterface(REFIID iid, void** ppv)
+{
+    if (ppv == NULL) return E_POINTER;
+    if (iid == IID_IUnknown)
+    {
+        *ppv = (IUnknown*) this;
+        return AddRef(), S_OK;
+    }
+    else if (iid == IID_IClassFactory)
+    {
+        *ppv = (IClassFactory*) this;
+        return AddRef(), S_OK;
+    }
+    return E_NOINTERFACE;
+}
+
+ULONG __stdcall ComponentDll::Impl::CListFactory::AddRef()
+{
+    return ++m_cRef;
+}
+
+ULONG __stdcall ComponentDll::Impl::CListFactory::Release()
+{
+    ULONG val = --m_cRef;
+    if (!val)
+    {
+        delete this;
+        return 0;
+    }
+    return val;
+}
+
 extern "C" COMPONENTDLL_API IUnknown* CreateInstance()
 {
     IUnknown * com = reinterpret_cast<IUnknown *>(new ComponentDll::Impl::CList());
