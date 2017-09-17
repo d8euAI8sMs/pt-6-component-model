@@ -41,7 +41,7 @@ namespace ComponentDll
 
         public:
 
-            CList() : m_cRef(0) { }
+            CList() : m_cRef(1) { }
 
             ~CList() { std::cout << __FUNCTION__ << std::endl; }
         };
@@ -63,7 +63,7 @@ namespace ComponentDll
 
         public:
 
-            CListFactory() : m_cRef(0) { }
+            CListFactory() : m_cRef(1) { }
 
             ~CListFactory() { std::cout << __FUNCTION__ << std::endl; }
         };

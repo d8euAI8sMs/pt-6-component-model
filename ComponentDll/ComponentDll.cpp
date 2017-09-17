@@ -183,5 +183,5 @@ HRESULT __stdcall ComponentDll::Impl::CListFactory::LockServer(BOOL fLock)
 extern "C" COMPONENTDLL_API IUnknown* CreateInstance()
 {
     IUnknown * com = reinterpret_cast<IUnknown *>(new ComponentDll::Impl::CList());
-    return com->AddRef(), com;
+    return com;
 }
