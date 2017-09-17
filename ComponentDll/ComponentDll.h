@@ -45,5 +45,27 @@ namespace ComponentDll
 
             ~CList() { std::cout << __FUNCTION__ << std::endl; }
         };
+
+        extern ULONG g_ServerLocks;
+
+        class CListFactory : public IClassFactory
+        {
+            ULONG m_cRef;
+
+            // IUnknown
+            HRESULT __stdcall QueryInterface(REFIID riid, void ** ppv);
+            ULONG   __stdcall AddRef();
+            ULONG   __stdcall Release();
+
+            // IClassFactory
+            HRESULT __stdcall CreateInstance(LPUNKNOWN pUnk, const IID & id, void ** ppv);
+            HRESULT __stdcall LockServer (BOOL fLock);
+
+        public:
+
+            CListFactory() : m_cRef(0) { }
+
+            ~CListFactory() { std::cout << __FUNCTION__ << std::endl; }
+        };
     }
 }
