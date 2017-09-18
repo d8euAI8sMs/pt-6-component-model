@@ -1,9 +1,16 @@
 #include "stdafx.h"
 
-#include <iostream>
+#import "../ComponentDll/Debug/ComponentDll.tlb"
 
-#include "../ComponentDll/ComponentDllAPI.h"
-#include "../ComponentDll/ComponentDll.h"
+#include <iostream>
+#include "Debug/componentdll.tlh"
+
+namespace ComponentDll
+{
+    static const UUID CLSID_CLIST     = __uuidof(__ComponentDll);
+    static const UUID IID_ICollection = __uuidof(ICollection);
+    static const UUID IID_IEnumerator = __uuidof(IEnumerator);
+}
 
 int _tmain(int argc, _TCHAR* argv[])
 {
@@ -73,8 +80,8 @@ int _tmain(int argc, _TCHAR* argv[])
     ComponentDll::ICollection * collection;
     component->QueryInterface(ComponentDll::IID_ICollection, (void**)&collection);
 
-    ComponentDll::Object obj1; obj1.Type = ComponentDll::ObjectType::otInt; obj1.Value.Int = 123456789;
-    ComponentDll::Object obj2; obj2.Type = ComponentDll::ObjectType::otDouble; obj1.Value.Double = 0.123456789;
+    ComponentDll::Object obj1; obj1.Type = ComponentDll::otInt; obj1.Value.Int = 123456789;
+    ComponentDll::Object obj2; obj2.Type = ComponentDll::otDouble; obj1.Value.Double = 0.123456789;
 
     std::cout << "Add 1st object to collection: HRESULT - " << collection->Add(obj1) << std::endl;
     std::cout << "Add 2nd object to collection: HRESULT - " << collection->Add(obj2) << std::endl;
