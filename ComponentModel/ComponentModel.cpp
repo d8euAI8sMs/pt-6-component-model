@@ -7,23 +7,27 @@
 
 int _tmain(int argc, _TCHAR* argv[])
 {
-    HMODULE lib = LoadLibrary(_T("ComponentDll"));
-    if (!lib)
-    {
-        std::cout << "Cannot load library, die" << std::endl;
-        system("pause");
-        return 1;
-    }
-    FARPROC proc = GetProcAddress(lib, "CreateInstance");
-    if (!proc)
-    {
-        std::cout << "Cannot find CreateInstance(), die" << std::endl;
-        system("pause");
-        return 2;
-    }
-    IUnknown * component = ((ComponentDll::CREATEINSTANCEPROC)proc)();
+    CoInitialize(NULL);
 
-    std::cout << "IUnknown (created) - 0x" << component << std::endl;
+    IClassFactory * fct;
+    HRESULT rc = CoGetClassObject(ComponentDll::CLSID_CLIST, CLSCTX_INPROC_SERVER, NULL, IID_IClassFactory, (void**)&fct);
+    if (!SUCCEEDED(rc))
+    {
+        std::cout << "Cannot get component factory, die" << std::endl; system("pause"); exit(0);
+    }
+
+    IUnknown * component;
+    rc = fct->CreateInstance(NULL, IID_IUnknown, (void**)&component);
+    if (SUCCEEDED(rc))
+    {
+        std::cout << "IUnknown (created) - 0x" << component << std::endl;
+    }
+    else
+    {
+        std::cout << "Cannot create component, die - HRESULT - " << rc << std::endl; system("pause"); exit(0);
+    }
+
+    fct->Release();
 
     // Assert transitivity, repeatability and so on
     {
