@@ -115,6 +115,45 @@ int _tmain(int argc, _TCHAR* argv[])
     collection->Release();
     component->Release();
 
+    std::cout << std::endl << std::endl;
+    std::cout << "Using of some interfaces through smart pointers" << std::endl;
+    std::cout << std::endl << std::endl;
+
+    {
+        ComponentDll::ICollectionPtr collectionSPtr(ComponentDll::CLSID_CLIST);
+
+        std::cout << "Add 1st object to collection: HRESULT - " << collectionSPtr->Add(obj1) << std::endl;
+        std::cout << "Add 2nd object to collection: HRESULT - " << collectionSPtr->Add(obj2) << std::endl;
+
+        // Enumerate the collection
+        {
+            ComponentDll::IEnumerator * enumerator;
+            collectionSPtr->QueryInterface(ComponentDll::IID_IEnumerator, (void**)&enumerator);
+            ComponentDll::IEnumeratorPtr enumeratorSPtr;
+            enumeratorSPtr.Attach(enumerator, true);
+            enumerator->Release();
+
+            std::cout << "Reset enumerator: HRESULT - " << enumeratorSPtr->Reset() << std::endl;
+
+            HRESULT r;
+            int next;
+            do
+            {
+                ComponentDll::Object o;
+                r = enumeratorSPtr->GetCurrent(&o);
+                std::cout << "\tObject of type " << o.Type << " : HRESULT - " << r << std::endl;
+                r = enumeratorSPtr->MoveNext(&next);
+                if (r == S_OK)
+                {
+                    std::cout << "\tMove next to " << next << " position : HRESULT - " << r << std::endl;
+                }
+            } while (r == S_OK);
+        }
+
+        std::cout << "Remove 1st object from collection: HRESULT - " << collectionSPtr->Remove(obj1) << std::endl;
+        std::cout << "Remove 2nd object from collection: HRESULT - " << collectionSPtr->Remove(obj2) << std::endl;
+    }
+
     system("pause");
 
 	return 0;
