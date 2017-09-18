@@ -48,9 +48,9 @@ namespace ComponentDll
     {
         extern HMODULE hCurrentModule;
 
-        static const WCHAR Name[]  = L"List Class";
-        static const WCHAR ProgIdVerInd[] = L"CList.Component";
-        static const WCHAR ProgId[] = L"CList.Component.1";
+        static const TCHAR Name[]  = _T("List Class");
+        static const TCHAR ProgIdVerInd[] = _T("CList.Component");
+        static const TCHAR ProgId[] = _T("CList.Component.1");
     }
 }
 
