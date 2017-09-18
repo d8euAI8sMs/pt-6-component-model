@@ -90,7 +90,7 @@ interface IEnumerator : IUnknown
      * returns:
      *
      *      S_OK              - On success
-     *      E_NOT_VALID_STATE - If no more elements present
+     *      S_FALSE           - If no more elements present
      */
     HRESULT MoveNext([out] int * result);
 
@@ -108,7 +108,7 @@ interface IEnumerator : IUnknown
      * returns:
      *
      *      S_OK              - On success
-     *      E_NOT_VALID_STATE - If the iterator position
+     *      S_FALSE           - If the iterator position
      *                          is invalid
      *      E_POINTER         - If NULL passed
      *

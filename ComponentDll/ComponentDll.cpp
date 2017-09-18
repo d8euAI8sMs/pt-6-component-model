@@ -104,7 +104,7 @@ HRESULT __stdcall ComponentDll::Impl::CList::Reset()
 
 HRESULT __stdcall ComponentDll::Impl::CList::MoveNext(int *result)
 {
-    if ((cIteratorPosition + 1) == mBackingCollection.size()) return E_NOT_VALID_STATE;
+    if ((cIteratorPosition + 1) == mBackingCollection.size()) return S_FALSE;
     ++cIteratorPosition;
     if (result)
     {
@@ -116,7 +116,7 @@ HRESULT __stdcall ComponentDll::Impl::CList::MoveNext(int *result)
 HRESULT __stdcall ComponentDll::Impl::CList::GetCurrent(Object *obj)
 {
     if (!obj) return E_POINTER;
-    if (cIteratorPosition >= mBackingCollection.size()) return E_NOT_VALID_STATE;
+    if (cIteratorPosition >= mBackingCollection.size()) return S_FALSE;
     *obj = mBackingCollection[cIteratorPosition];
     return S_OK;
 }
