@@ -1,0 +1,13 @@
+The repository consists of code for private personal use only.
+
+Used materials:
+
+    https://www.codeproject.com/Articles/338268/COM-in-C
+    
+        The component registration model
+        The class factory
+        
+        This Work is not supposed to be Derivative Work
+        of the menthioned project, so The Code Project
+        Open License (CPOL) terms are not applicable
+        to this product and to any of its part
