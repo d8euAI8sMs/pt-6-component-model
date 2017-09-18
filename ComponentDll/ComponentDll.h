@@ -19,10 +19,10 @@ namespace ComponentDll
 
         extern ULONG g_ComponentRefs;
 
-        class CList : public ComponentDll::ICollection, public ComponentDll::IEnumerator
+        class CList : public ICollection, public IEnumerator
         {
             ULONG m_cRef;
-            std::vector < ComponentDll::Object > mBackingCollection;
+            std::vector < Object > mBackingCollection;
             SIZE_T cIteratorPosition;
 
             // IUnknown
@@ -31,15 +31,15 @@ namespace ComponentDll
             ULONG   __stdcall Release();
 
             // ICollection
-            HRESULT __stdcall Add(ComponentDll::Object obj);
-            HRESULT __stdcall Remove(ComponentDll::Object obj);
+            HRESULT __stdcall Add(Object obj);
+            HRESULT __stdcall Remove(Object obj);
             HRESULT __stdcall GetCount(unsigned *count);
-            HRESULT __stdcall ToArray(ComponentDll::ObjectArray **arr);
+            HRESULT __stdcall ToArray(ObjectArray **arr);
 
             // IEnumerator
             HRESULT __stdcall Reset();
             HRESULT __stdcall MoveNext(int *result);
-            HRESULT __stdcall GetCurrent(ComponentDll::Object *obj);
+            HRESULT __stdcall GetCurrent(Object *obj);
 
         public:
 
