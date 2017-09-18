@@ -93,11 +93,11 @@ int _tmain(int argc, _TCHAR* argv[])
             r = enumerator->GetCurrent(&o);
             std::cout << "\tObject of type " << o.Type << " : HRESULT - " << r << std::endl;
             r = enumerator->MoveNext(&next);
-            if (SUCCEEDED(r))
+            if (r == S_OK)
             {
                 std::cout << "\tMove next to " << next << " position : HRESULT - " << r << std::endl;
             }
-        } while (SUCCEEDED(r));
+        } while (r == S_OK);
 
         enumerator->Release();
     }
