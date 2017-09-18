@@ -1,0 +1,128 @@
+import "oaidl.idl";
+import "ocidl.idl";
+
+[uuid(BA834E92-78ED-46A9-BAC6-1CC2A6416CF3)]
+library ComponentDll
+{
+
+    interface ICollection;
+    interface IEnumerator;
+
+    typedef enum tagObjectType
+    {
+        otInt,
+        otDouble,
+        otArray
+    } ObjectType;
+
+    union Object;
+
+    typedef struct tagObjectArray
+    {
+        unsigned Count;
+        struct Object * Data;
+    } ObjectArray;
+
+    typedef union Object switch (ObjectType Type) Value
+    {
+    case otInt:
+        int Int;
+    case otDouble:
+        double Double;
+    case otArray:
+        ObjectArray *Array;
+    } Object;
+}
+
+[
+    object,
+    uuid(37f7727a-0174-4f2b-ade9-271b949aa229)
+]
+interface ICollection : IUnknown
+{
+    HRESULT Add([in] Object obj);
+    HRESULT Remove([in] Object obj);
+    HRESULT GetCount([out] unsigned * pCount);
+
+    /**
+     * summary:
+     *
+     *      Allocates the new ObjectArray and copies
+     *      to it whole content of this collection.
+     *
+     * params:
+     *
+     *      arr - The pointer to (ObjectArray *) variable
+     *
+     * returns:
+     *
+     *      S_OK      - On success
+     *      E_POINTER - If NULL passed
+     *
+     * remarks:
+     *
+     *      The function allocates an array of Objects.
+     *      The array itself and its Data field must be freed
+     *      manually by call to the operator delete (or delete[]).
+     */
+    HRESULT ToArray([out] ObjectArray ** arr);
+}
+
+[
+    object,
+    uuid(7baab13d-ac13-484c-a1a0-132b28136425)
+]
+interface IEnumerator : IUnknown
+{
+    HRESULT Reset();
+
+    /**
+     * summary:
+     *
+     *      Moves this iterator object a one position next,
+     *      if possible.
+     *
+     * params:
+     *
+     *      result - Receives the new position of the
+     *               iterator object, may be NULL
+     *
+     * returns:
+     *
+     *      S_OK              - On success
+     *      E_NOT_VALID_STATE - If no more elements present
+     */
+    HRESULT MoveNext([out] int * result);
+
+    /**
+     * summary:
+     *
+     *      Retrieves the object this iterator object
+     *      points to.
+     *
+     * params:
+     *
+     *      obj - Receives the copy of the object
+     *            pointed by this iterator object
+     *
+     * returns:
+     *
+     *      S_OK              - On success
+     *      E_NOT_VALID_STATE - If the iterator position
+     *                          is invalid
+     *      E_POINTER         - If NULL passed
+     *
+     * remarks:
+     *
+     *      The iterator may become invalid in case if
+     *      the collection size is reduced. To ensure
+     *      the iterator is always in valid state, don't
+     *      mix collection modification operations and
+     *      collection iteration operations.
+     *
+     *      Since the iterator in this model is supposed
+     *      to be a singleton, reset function should
+     *      always be called right after the iterator is obtained.
+     */
+    HRESULT GetCurrent([out] Object * obj);
+}
