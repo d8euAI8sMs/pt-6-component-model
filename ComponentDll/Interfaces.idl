@@ -1,7 +1,7 @@
 import "oaidl.idl";
 import "ocidl.idl";
 
-[uuid(BA834E92-78ED-46A9-BAC6-1CC2A6416CF3)]
+[uuid(c415618f-c097-4590-90dc-869ce756ff83)]
 library ComponentDll
 {
 
