@@ -1,9 +1,9 @@
 #include "stdafx.h"
 
-#import "../ComponentDll/Debug/ComponentDll.tlb"
+#import "ComponentDll.tlb"
 
 #include <iostream>
-#include "Debug/componentdll.tlh"
+#include "componentdll.tlh"
 
 namespace ComponentDll
 {
