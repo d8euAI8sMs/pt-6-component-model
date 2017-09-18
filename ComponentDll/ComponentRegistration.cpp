@@ -44,6 +44,42 @@ BOOL SetRegistryKeyValue(_In_     LPCTSTR pszKey,       _In_opt_ LPCTSTR pszSubK
     return (lResult == ERROR_SUCCESS);
 }
 
+BOOL DeleteRegistryHive(_In_ HKEY hKeyParent, _In_ LPCTSTR pszKey)
+{
+    HKEY hKey;
+    LSTATUS lResult = RegOpenKeyEx(hKeyParent,
+	                               pszKey,
+	                               REG_OPTION_NON_VOLATILE,
+	                               KEY_ALL_ACCESS,
+                                   &hKey);
+	if (lResult != ERROR_SUCCESS)
+	{
+        if (lResult == ERROR_FILE_NOT_FOUND) return TRUE;
+		return FALSE;
+	}
+
+    FILETIME time;
+	TCHAR szBuffer[MAX_PATH + 1];
+	DWORD dwSize = MAX_PATH + 1;
+	while (RegEnumKeyEx(hKey, 0, szBuffer, &dwSize, NULL,
+	                    NULL, NULL, &time) == ERROR_SUCCESS)
+	{
+        BOOL ok = DeleteRegistryHive(hKey, szBuffer);
+		if (!ok)
+		{
+			RegCloseKey(hKey);
+			return FALSE;
+		}
+		dwSize = MAX_PATH + 1;
+	}
+
+    RegCloseKey(hKey);
+
+    lResult = RegDeleteKey(hKeyParent, pszKey);
+
+    return (lResult == ERROR_SUCCESS);
+}
+
 STDAPI DllRegisterServer()
 {
     const SIZE_T clsidSize = 39;
@@ -89,5 +125,23 @@ STDAPI DllRegisterServer()
 
 STDAPI DllUnregisterServer()
 {
-    return S_OK;
+    const SIZE_T clsidSize = 39;
+    TCHAR clsid[clsidSize];
+
+    // get clsid as string
+    LPOLESTR pszCLSID = NULL;
+	HRESULT hr = StringFromCLSID(ComponentDll::CLSID_CLIST, &pszCLSID);
+    _tcscpy_s(clsid, pszCLSID);
+	CoTaskMemFree(pszCLSID);
+
+    BOOL result = TRUE;
+
+    TCHAR buffer[MAX_PATH + 1] = _T("CLSID\\");
+    _tcscat_s(buffer, clsid);
+
+    result &= DeleteRegistryHive(HKEY_CLASSES_ROOT, ComponentDll::Impl::ProgIdVerInd);
+    result &= DeleteRegistryHive(HKEY_CLASSES_ROOT, ComponentDll::Impl::ProgId);
+    result &= DeleteRegistryHive(HKEY_CLASSES_ROOT, buffer);
+
+    return (result ? S_OK : SELFREG_E_CLASS);
 }
