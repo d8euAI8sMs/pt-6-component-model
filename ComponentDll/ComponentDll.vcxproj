@@ -81,11 +81,13 @@
   <ItemGroup>
     <ClInclude Include="ComponentDll.h" />
     <ClInclude Include="ComponentDllAPI.h" />
+    <ClInclude Include="ComponentRegistration.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ComponentDll.cpp" />
+    <ClCompile Include="ComponentRegistration.cpp" />
     <ClCompile Include="dllmain.cpp">
       <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</CompileAsManaged>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
