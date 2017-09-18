@@ -46,7 +46,7 @@ namespace ComponentDll
 {
     namespace Impl
     {
-        extern HMODULE hCurrentModule;
+        extern HMODULE g_hCurrentModule;
 
         static const TCHAR Name[]  = _T("List Class");
         static const TCHAR ProgIdVerInd[] = _T("CList.Component");

@@ -5,7 +5,7 @@
 
 #include "ComponentRegistration.h"
 
-HMODULE ComponentDll::Impl::hCurrentModule;
+HMODULE ComponentDll::Impl::g_hCurrentModule;
 
 STDAPI DllInstall(BOOL bInstall, PCWSTR pszCmdLine)
 {
@@ -87,7 +87,7 @@ STDAPI DllRegisterServer()
     TCHAR path[MAX_PATH + 1];
 
     // get module path
-	if (!GetModuleFileName(ComponentDll::Impl::hCurrentModule, path, MAX_PATH + 1))
+	if (!GetModuleFileName(ComponentDll::Impl::g_hCurrentModule, path, MAX_PATH + 1))
     {
         return SELFREG_E_CLASS;
     }
