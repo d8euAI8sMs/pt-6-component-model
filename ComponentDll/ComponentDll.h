@@ -48,8 +48,6 @@ namespace ComponentDll
             ~CList() { std::cout << __FUNCTION__ << std::endl; InterlockedDecrement(&g_ComponentRefs); }
         };
 
-        extern ULONG g_ServerLocks;
-
         class CListFactory : public IClassFactory
         {
             ULONG m_cRef;
@@ -65,9 +63,9 @@ namespace ComponentDll
 
         public:
 
-            CListFactory() : m_cRef(1) { }
+            CListFactory() : m_cRef(1) { InterlockedIncrement(&g_ComponentRefs); }
 
-            ~CListFactory() { std::cout << __FUNCTION__ << std::endl; }
+            ~CListFactory() { std::cout << __FUNCTION__ << std::endl; InterlockedDecrement(&g_ComponentRefs); }
         };
     }
 }

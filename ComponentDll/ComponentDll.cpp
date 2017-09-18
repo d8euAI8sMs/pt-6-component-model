@@ -163,7 +163,6 @@ HRESULT __stdcall ComponentDll::Impl::CListFactory::CreateInstance(LPUNKNOWN pUn
     return rc;
 }
 
-ULONG ComponentDll::Impl::g_ServerLocks = 0;
 ULONG ComponentDll::Impl::g_ComponentRefs = 0;
 
 HRESULT __stdcall ComponentDll::Impl::CListFactory::LockServer(BOOL fLock)
@@ -171,11 +170,9 @@ HRESULT __stdcall ComponentDll::Impl::CListFactory::LockServer(BOOL fLock)
 	if (fLock)
     {
         CoLockObjectExternal((IUnknown *) this, TRUE, TRUE);
-        InterlockedIncrement(&g_ServerLocks);
     }
     else
     {
-        InterlockedDecrement(&g_ServerLocks);
         CoLockObjectExternal((IUnknown *) this, FALSE, TRUE);
     }
     return S_OK;
@@ -189,8 +186,7 @@ extern "C" COMPONENTDLL_API IUnknown* CreateInstance()
 
 STDAPI DllCanUnloadNow() {
 	HRESULT rc = E_UNEXPECTED;
-	if ((ComponentDll::Impl::g_ServerLocks == 0)
-        && (ComponentDll::Impl::g_ComponentRefs == 0)) rc = S_OK;
+	if (ComponentDll::Impl::g_ComponentRefs == 0) rc = S_OK;
 	else rc = S_FALSE;
 	return rc;
 };
