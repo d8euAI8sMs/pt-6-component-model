@@ -104,7 +104,7 @@ HRESULT __stdcall ComponentDll::Impl::CList::Reset()
 
 HRESULT __stdcall ComponentDll::Impl::CList::MoveNext(int *result)
 {
-    if ((cIteratorPosition + 1) == mBackingCollection.size()) return S_FALSE;
+    if ((cIteratorPosition + 1) >= mBackingCollection.size()) return S_FALSE;
     ++cIteratorPosition;
     if (result)
     {
