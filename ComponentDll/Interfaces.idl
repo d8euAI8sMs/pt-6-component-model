@@ -1,12 +1,19 @@
 import "oaidl.idl";
 import "ocidl.idl";
 
-[uuid(c415618f-c097-4590-90dc-869ce756ff83)]
+[uuid(c415618f-c097-4590-91dc-869ce756ff83)]
 library ComponentDll
 {
 
     interface ICollection;
     interface IEnumerator;
+
+    [uuid(c415618f-c097-4590-90dc-869ce756ff83)]
+    coclass CList
+    {
+        [default] interface ICollection;
+        interface IEnumerator;
+    };
 
     typedef enum tagObjectType
     {

@@ -7,7 +7,7 @@
 
 namespace ComponentDll
 {
-    static const UUID CLSID_CLIST     = __uuidof(__ComponentDll);
+    static const UUID CLSID_CLIST     = __uuidof(CList);
     static const UUID IID_ICollection = __uuidof(ICollection);
     static const UUID IID_IEnumerator = __uuidof(IEnumerator);
 }
