@@ -104,21 +104,23 @@ HRESULT __stdcall ComponentDll::Impl::CList::Reset()
 
 HRESULT __stdcall ComponentDll::Impl::CList::MoveNext(int *result)
 {
-    if ((cIteratorPosition + 1) >= mBackingCollection.size()) return S_FALSE;
-    ++cIteratorPosition;
-    if (result)
-    {
-        *result = cIteratorPosition;
-    }
-    return S_OK;
+	if (!result) return E_POINTER;
+	if ((cIteratorPosition + 1) >= mBackingCollection.size())
+	{
+		*result = FALSE;
+		return S_FALSE;
+	}
+	++cIteratorPosition;
+	*result = TRUE;
+	return S_OK;
 }
 
 HRESULT __stdcall ComponentDll::Impl::CList::GetCurrent(Object *obj)
 {
-    if (!obj) return E_POINTER;
-    if (cIteratorPosition >= mBackingCollection.size()) return S_FALSE;
-    *obj = mBackingCollection[cIteratorPosition];
-    return S_OK;
+	if (!obj) return E_POINTER;
+	if (cIteratorPosition >= mBackingCollection.size()) return E_NOT_VALID_STATE;
+	*obj = mBackingCollection[cIteratorPosition];
+	return S_OK;
 }
 
 HRESULT __stdcall ComponentDll::Impl::CListFactory::QueryInterface(REFIID iid, void** ppv)

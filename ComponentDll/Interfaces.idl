@@ -91,13 +91,13 @@ interface IEnumerator : IUnknown
      *
      * params:
      *
-     *      result - Receives the new position of the
-     *               iterator object, may be NULL
+     *      result - The status of the operation
      *
      * returns:
      *
-     *      S_OK              - On success
-     *      S_FALSE           - If no more elements present
+     *      S_OK      - On success
+     *      S_FALSE   - If no more elements present
+     *      E_POINTER - If NULL passed
      */
     HRESULT MoveNext([out] int * result);
 
