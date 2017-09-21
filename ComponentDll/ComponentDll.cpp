@@ -44,7 +44,7 @@ class CList : public ComponentDll::ICollection, public ComponentDll::IEnumerator
 
 public:
 
-    CList() : m_cRef(0) { }
+    CList() : m_cRef(0), cIteratorPosition(MAXSIZE_T) { }
 
     ~CList() { std::cout << __FUNCTION__ << std::endl; }
 };
@@ -123,18 +123,20 @@ HRESULT __stdcall CList::ToArray(ComponentDll::ObjectArray **arr)
 
 HRESULT __stdcall CList::Reset()
 {
-    cIteratorPosition = 0;
+	cIteratorPosition = MAXSIZE_T;
     return S_OK;
 }
 
 HRESULT __stdcall CList::MoveNext(int *result)
 {
-    if ((cIteratorPosition + 1) == mBackingCollection.size()) return E_NOT_VALID_STATE;
+	if (!result) return E_POINTER;
+	if ((cIteratorPosition + 1) >= mBackingCollection.size())
+	{
+		*result = FALSE;
+		return S_FALSE;
+	}
     ++cIteratorPosition;
-    if (result)
-    {
-        *result = cIteratorPosition;
-    }
+    *result = TRUE;
     return S_OK;
 }
 

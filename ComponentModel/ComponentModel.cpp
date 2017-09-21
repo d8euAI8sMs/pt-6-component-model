@@ -82,18 +82,22 @@ int _tmain(int argc, _TCHAR* argv[])
         std::cout << "Reset enumerator: HRESULT - " << enumerator->Reset() << std::endl;
 
         HRESULT r;
-        int next;
+        int hasNext;
         do
         {
             ComponentDll::Object o;
-            r = enumerator->GetCurrent(&o);
-            std::cout << "\tObject of type " << o.Type << " : HRESULT - " << r << std::endl;
-            r = enumerator->MoveNext(&next);
-            if (SUCCEEDED(r))
-            {
-                std::cout << "\tMove next to " << next << " position : HRESULT - " << r << std::endl;
-            }
-        } while (SUCCEEDED(r));
+			r = enumerator->MoveNext(&hasNext);
+			std::cout << "\tMove next : HRESULT - " << r << std::endl;
+			if (hasNext)
+			{
+				r = enumerator->GetCurrent(&o);
+				std::cout << "\tObject of type " << o.Type << " : HRESULT - " << r << std::endl;
+			}
+			else
+			{
+				break;
+			}
+        } while (1);
 
         enumerator->Release();
     }
