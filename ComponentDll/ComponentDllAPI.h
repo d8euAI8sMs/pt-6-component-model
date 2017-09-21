@@ -102,13 +102,13 @@ namespace ComponentDll
          *      
          * params:
          * 
-         *      result - Receives the new position of the
-         *               iterator object, may be NULL
+         *      result - The status of the operation
          *      
          * returns:
          * 
          *      S_OK              - On success
-         *      E_NOT_VALID_STATE - If no more elements present
+         *      S_FALSE           - On failure
+         *      E_POINTER         - If NULL passed
          */
         virtual HRESULT __stdcall MoveNext(int *result) = 0;
         

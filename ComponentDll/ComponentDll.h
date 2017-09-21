@@ -43,7 +43,7 @@ namespace ComponentDll
 
         public:
 
-            CList() : m_cRef(1) { InterlockedIncrement(&g_ComponentRefs); }
+            CList() : m_cRef(1), cIteratorPosition(MAXSIZE_T) { InterlockedIncrement(&g_ComponentRefs); }
 
             ~CList() { std::cout << __FUNCTION__ << std::endl; InterlockedDecrement(&g_ComponentRefs); }
         };
