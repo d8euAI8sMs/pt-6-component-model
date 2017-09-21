@@ -24,14 +24,26 @@ BOOL SetRegistryKeyValue(_In_     LPCTSTR pszKey,       _In_opt_ LPCTSTR pszSubK
         _tcscat_s(buffer, pszSubKey);
     }
 
-    HKEY hKey;
-    LSTATUS lResult = RegCreateKeyEx(HKEY_CLASSES_ROOT,
-	                                 buffer,
+    HKEY hKeyUserClasses;
+    LSTATUS lResult = RegCreateKeyEx(HKEY_CURRENT_USER,
+	                                 _T("Software\\Classes"),
 	                                 0, NULL, REG_OPTION_NON_VOLATILE,
 	                                 KEY_ALL_ACCESS, NULL,
-	                                 &hKey, NULL);
+	                                 &hKeyUserClasses, NULL);
 	if (lResult != ERROR_SUCCESS)
 	{
+		return FALSE;
+	}
+
+    HKEY hKey;
+    lResult = RegCreateKeyEx(hKeyUserClasses,
+	                         buffer,
+	                         0, NULL, REG_OPTION_NON_VOLATILE,
+	                         KEY_ALL_ACCESS, NULL,
+	                         &hKey, NULL);
+	if (lResult != ERROR_SUCCESS)
+	{
+        RegCloseKey(hKeyUserClasses);
 		return FALSE;
 	}
 
@@ -40,6 +52,7 @@ BOOL SetRegistryKeyValue(_In_     LPCTSTR pszKey,       _In_opt_ LPCTSTR pszSubK
 	                        (_tcslen(pszValue) + 1) * sizeof(TCHAR));
 
     RegCloseKey(hKey);
+    RegCloseKey(hKeyUserClasses);
 
     return (lResult == ERROR_SUCCESS);
 }
@@ -139,9 +152,22 @@ STDAPI DllUnregisterServer()
     TCHAR buffer[MAX_PATH + 1] = _T("CLSID\\");
     _tcscat_s(buffer, clsid);
 
-    result &= DeleteRegistryHive(HKEY_CLASSES_ROOT, ComponentDll::Impl::ProgIdVerInd);
-    result &= DeleteRegistryHive(HKEY_CLASSES_ROOT, ComponentDll::Impl::ProgId);
-    result &= DeleteRegistryHive(HKEY_CLASSES_ROOT, buffer);
+    HKEY hKeyUserClasses;
+    LSTATUS lResult = RegCreateKeyEx(HKEY_CURRENT_USER,
+	                                 _T("Software\\Classes"),
+	                                 0, NULL, REG_OPTION_NON_VOLATILE,
+	                                 KEY_ALL_ACCESS, NULL,
+	                                 &hKeyUserClasses, NULL);
+	if (lResult != ERROR_SUCCESS)
+	{
+		return SELFREG_E_CLASS;
+	}
+
+    result &= DeleteRegistryHive(hKeyUserClasses, ComponentDll::Impl::ProgIdVerInd);
+    result &= DeleteRegistryHive(hKeyUserClasses, ComponentDll::Impl::ProgId);
+    result &= DeleteRegistryHive(hKeyUserClasses, buffer);
+
+    RegCloseKey(hKeyUserClasses);
 
     return (result ? S_OK : SELFREG_E_CLASS);
 }
