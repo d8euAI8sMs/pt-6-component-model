@@ -131,11 +131,7 @@ int _tmain(int argc, _TCHAR* argv[])
 
         // Enumerate the collection
         {
-            ComponentDll::IEnumerator * enumerator;
-            collectionSPtr->QueryInterface(ComponentDll::IID_IEnumerator, (void**)&enumerator);
-            ComponentDll::IEnumeratorPtr enumeratorSPtr;
-            enumeratorSPtr.Attach(enumerator, true);
-            enumerator->Release();
+            ComponentDll::IEnumeratorPtr enumeratorSPtr = collectionSPtr;
 
             std::cout << "Reset enumerator: HRESULT - " << enumeratorSPtr->Reset() << std::endl;
 
