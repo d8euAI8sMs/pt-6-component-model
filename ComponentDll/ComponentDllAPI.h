@@ -82,7 +82,7 @@ namespace ComponentDll
          * 
          *      The function allocates an array of Objects.
          *      The array itself and its Data field must be freed
-         *      manually by call to the operator delete (or delete[]).
+         *      manually by call to the CoTaskMemFree().
          */
         virtual HRESULT __stdcall ToArray(ObjectArray **arr) = 0;
     };
