@@ -85,9 +85,11 @@ HRESULT __stdcall ComponentDll::Impl::CList::GetCount(unsigned *count)
 HRESULT __stdcall ComponentDll::Impl::CList::ToArray(ObjectArray **arr)
 {
     if (!arr) return E_POINTER;
-    *arr = new ObjectArray();
+    *arr = (ObjectArray *)CoTaskMemAlloc(sizeof(ObjectArray));
+    if (!*arr) return E_OUTOFMEMORY;
     (*arr)->Count = mBackingCollection.size();
-    (*arr)->Data = new Object[mBackingCollection.size()];
+    (*arr)->Data = (Object *)CoTaskMemAlloc(mBackingCollection.size() * sizeof(Object));
+    if (!(*arr)->Data) { CoTaskMemFree(*arr); return E_OUTOFMEMORY; }
     SIZE_T idx = 0;
     for each (const Object &obj in mBackingCollection)
     {
